@@ -1,0 +1,4 @@
+vlib/v/checker/tests/map_cast_err.vv:2:9: error: cannot cast map[string]int to int
+    1 | h := {'h': 23}
+    2 | println(int(h))
+      |         ~~~~~~

@@ -28,12 +28,10 @@ fn test_referenced_generic_operator_overloading() {
 
 fn test_referenced_operator_overloading() {
 	mut non_generic := &NonGeneric{2}
+	non_generic += &NonGeneric{6}
 
-	// TODO: make the below code to compile
-	// non_generic += &NonGeneric{6}
-	// assert non_generic.f == 8
-
-	assert (non_generic + &NonGeneric{2}).f == 4
+	assert non_generic.f == 8
+	assert (non_generic + &NonGeneric{2}).f == 10
 
 }
 

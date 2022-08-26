@@ -299,7 +299,7 @@ fn (mut g Gen) assign_stmt(node_ ast.AssignStmt) {
 					g.writeln(');')
 					return
 				} else {
-					g.write(' = ${styp}_${util.replace_op(extracted_op)}(')
+					g.write(' = ${left_sym.cname}_${util.replace_op(extracted_op)}(')
 					method := g.table.find_method(left_sym, extracted_op) or {
 						// the checker will most likely have found this, already...
 						g.error('assignment operator `$extracted_op=` used but no `$extracted_op` method defined',

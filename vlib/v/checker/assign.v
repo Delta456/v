@@ -392,7 +392,7 @@ pub fn (mut c Checker) assign_stmt(mut node ast.AssignStmt) {
 		}
 		left_is_ptr := left_type.is_ptr() || left_sym.is_pointer()
 		if left_is_ptr && !left.is_auto_deref_var() {
-			if !c.inside_unsafe && node.op !in [.assign, .decl_assign] {
+			if !c.inside_unsafe && node.op !in [.assign, .decl_assign] && (left_sym.kind != .struct_ && right_sym.kind != .struct_) {
 				// ptr op=
 				c.warn('pointer arithmetic is only allowed in `unsafe` blocks', node.pos)
 			}

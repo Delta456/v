@@ -44,12 +44,12 @@ pub fn (mut c Checker) infix_expr(mut node ast.InfixExpr) ast.Type {
 	if left_type.is_any_kind_of_pointer()
 		&& node.op in [.plus, .minus, .mul, .div, .mod, .xor, .amp, .pipe] {
 		if !c.pref.translated && ((right_type.is_any_kind_of_pointer() && node.op != .minus)
-			|| (!right_type.is_any_kind_of_pointer() && node.op !in [.plus, .minus])) && (right_sym.kind != .struct_ && left_sym.kind != .struct_){
+			|| (!right_type.is_any_kind_of_pointer() && node.op !in [.plus, .minus])) && (right_sym.kind != .struct_ && left_sym.kind != .struct_) {
 			left_name := c.table.type_to_str(left_type)
 			right_name := c.table.type_to_str(right_type)
 			c.error('invalid operator `$node.op` to `$left_name` and `$right_name`', left_right_pos)
 		} else if node.op in [.plus, .minus] {
-			if !c.inside_unsafe && !node.left.is_auto_deref_var() && !node.right.is_auto_deref_var() {
+			if !c.inside_unsafe && !node.left.is_auto_deref_var() && !node.right.is_auto_deref_var() && (right_sym.kind != .struct_ && left_sym.kind != .struct_)  {
 				c.warn('pointer arithmetic is only allowed in `unsafe` blocks', left_right_pos)
 			}
 			if left_type == ast.voidptr_type && !c.pref.translated {

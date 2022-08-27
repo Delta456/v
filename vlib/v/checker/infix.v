@@ -55,9 +55,6 @@ pub fn (mut c Checker) infix_expr(mut node ast.InfixExpr) ast.Type {
 			} else {
 				c.invalid_operator_error(node.op, left_type, right_type, left_right_pos)
 			}
-			left_name := c.table.type_to_str(left_type)
-			right_name := c.table.type_to_str(right_type)
-			c.error('invalid operator `$node.op` to `$left_name` and `$right_name`', left_right_pos)
 		} else if node.op in [.plus, .minus] {
 			if !c.inside_unsafe && !node.left.is_auto_deref_var() && !node.right.is_auto_deref_var()
 				&& (right_sym.kind != .struct_ && left_sym.kind != .struct_) {

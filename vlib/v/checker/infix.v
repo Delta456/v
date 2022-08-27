@@ -44,7 +44,17 @@ pub fn (mut c Checker) infix_expr(mut node ast.InfixExpr) ast.Type {
 	if left_type.is_any_kind_of_pointer()
 		&& node.op in [.plus, .minus, .mul, .div, .mod, .xor, .amp, .pipe] {
 		if !c.pref.translated && ((right_type.is_any_kind_of_pointer() && node.op != .minus)
-			|| (!right_type.is_any_kind_of_pointer() && node.op !in [.plus, .minus])) {
+			|| (!right_type.is_any_kind_of_pointer() && node.op !in [.plus, .minus]))
+			&& (right_sym.kind != .struct_ && left_sym.kind != .struct_) {
+			if _ := left_sym.find_method(node.op.str()) {
+				if left_sym.kind == .alias && right_sym.kind == .alias {
+					// allow an explicit operator override `fn (x &AliasType) OP (y &AliasType) &AliasType {`
+				} else {
+					c.invalid_operator_error(node.op, left_type, right_type, left_right_pos)
+				}
+			} else {
+				c.invalid_operator_error(node.op, left_type, right_type, left_right_pos)
+			}
 			left_name := c.table.type_to_str(left_type)
 			right_name := c.table.type_to_str(right_type)
 			c.error('invalid operator `$node.op` to `$left_name` and `$right_name`', left_right_pos)

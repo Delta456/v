@@ -266,7 +266,6 @@ fn (mut g Gen) gen_fn_decl(node &ast.FnDecl, skip bool) {
 		} else {
 			''
 		}
-		println(name)
 		fn_header := '$visibility_kw$type_name $fn_attrs${name}('
 		g.definitions.write_string(fn_header)
 		g.write(fn_header)

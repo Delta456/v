@@ -3445,7 +3445,8 @@ pub fn (mut c Checker) index_expr(mut node ast.IndexExpr) ast.Type {
 		if !is_ok && node.index is ast.RangeExpr {
 			s := c.table.type_to_str(typ)
 			c.error('type `$s` does not support slicing', node.pos)
-		} else if !c.inside_unsafe && !is_ok && !c.pref.translated && !c.file.is_translated {
+		} else if !c.inside_unsafe && !is_ok && !c.pref.translated && !c.file.is_translated
+			&& !(c.table.sym(typ).kind == .alias && typ_sym.kind in [.array, .array_fixed, .map]) {
 			c.warn('pointer indexing is only allowed in `unsafe` blocks', node.pos)
 		}
 	}

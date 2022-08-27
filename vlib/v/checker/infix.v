@@ -44,7 +44,8 @@ pub fn (mut c Checker) infix_expr(mut node ast.InfixExpr) ast.Type {
 	if left_type.is_any_kind_of_pointer()
 		&& node.op in [.plus, .minus, .mul, .div, .mod, .xor, .amp, .pipe] {
 		if !c.pref.translated && ((right_type.is_any_kind_of_pointer() && node.op != .minus)
-			|| (!right_type.is_any_kind_of_pointer() && node.op !in [.plus, .minus])) {
+			|| (!right_type.is_any_kind_of_pointer() && node.op !in [.plus, .minus]))
+			&& (right_sym.kind != .struct_ && left_sym.kind != .struct_) {
 			if _ := left_sym.find_method(node.op.str()) {
 				if left_sym.kind == .alias && right_sym.kind == .alias {
 					// allow an explicit operator override `fn (x &AliasType) OP (y &AliasType) &AliasType {`

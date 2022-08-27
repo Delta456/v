@@ -63,6 +63,7 @@ fn (mut c Checker) fn_decl(mut node ast.FnDecl) {
 			}
 		}
 		if need_generic_names {
+			println('here? $node.name')
 			if node.is_method && node.name !in ['+', '-', '*', '/', '%'] {
 				c.add_error_detail('use `fn (r SomeType<T>) foo<T>() {`, not just `fn (r SomeType<T>) foo() {`')
 				c.error('generic method declaration must specify generic type names',

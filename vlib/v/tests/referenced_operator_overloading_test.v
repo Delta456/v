@@ -32,6 +32,4 @@ fn test_referenced_operator_overloading() {
 
 	assert non_generic.f == 8
 	assert (non_generic + &NonGeneric{2}).f == 10
-
 }
-
